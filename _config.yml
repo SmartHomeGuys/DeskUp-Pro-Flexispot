@@ -1,0 +1,13 @@
+title: DeskUp Pro FlexiSpot
+description: Control FlexiSpot standing desks from your smart home system (Home Assistant and others) with DeskUp Pro
+
+remote_theme: pages-themes/slate@v0.2.0
+#remote_theme: just-the-docs/just-the-docs
+#remote_theme: pages-themes/minimal@v0.2.0
+plugins:
+- jekyll-remote-theme
+
+#url: https://smarthomeguys.github.io
+
+#aux_links:
+#  Template Repository: https://github.com/just-the-docs/just-the-docs-template
