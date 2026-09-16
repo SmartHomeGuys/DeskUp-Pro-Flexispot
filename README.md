@@ -94,12 +94,6 @@ You should understand the risks before purchasing, it's your responsibility to d
 
 
 ## Prefer to build one yourself 
-<p align="center">
-
-    TODO: Add images
-
-</p>
-
 DeskUp Pro Flexispot will always remain open source and in this Github repository you can find:
 
 - Instructions on how to build/wire up the ESP32.
@@ -118,7 +112,7 @@ And would simply like to get the device pre-built, in a box that you can plug in
 
 <p align="center">
 
-    TODO: ADd store link
+    Estimated to be available on the store by end of 2026
 
 </p>
 

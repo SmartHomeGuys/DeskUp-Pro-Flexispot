@@ -1,8 +1,8 @@
-# Configure the DeskUp Pro Flexispot in Home Assistant & Homey Pro
+# Configure the DeskUp Pro Flexispot in Home Assistant
 
 Before you use the DeskUp Pro Flexispot make sure to specify your desks min / max physical limits and familiarise yourself with the screen layout here:
 
-TODO [Screen Layout and what it all does](screen-layout/README.md)
+[Screen Layout and what it all does](screen-layout/README.md)
 
 
 # Home Assistant Examples

@@ -879,7 +879,7 @@ switch:
       mode: OUTPUT
     restore_mode: ALWAYS_ON
     entity_category: "config"
-    internal: false #true
+    internal: true
 
   - platform: uart
     name: "Up"
