@@ -18,9 +18,7 @@ All the existing functionality of the desk's controller is retained.  Connect th
 
 ## What is shown in Home Assistant
 <p align="center">
-
-    TODO: Add images
-
+    <img src="images/HomeAssistant-Controls.png" height="450px" />
 </p>
 
 30 entities are exposed in Home Assistant that let you control every function of the DeskUp Pro Flexispot.
@@ -28,15 +26,13 @@ All the existing functionality of the desk's controller is retained.  Connect th
 ## Homey Pro App (coming soon to the app store December 2026)
 <p align="center">
 
-    TODO: Add images
+    TODO: Add images (when available)
 
 </p>
 
 ## Other smart home systems can use the built in Web Interface and its Rest API
 <p align="center">
-
-    TODO: Add images
-
+    <img src="images/WebUI-AllControls.png" />
 </p>
 
 Every function of the DeskUp Pro Flexispot can be controlled using its [Api](docs/configuration/rest-api.md).
