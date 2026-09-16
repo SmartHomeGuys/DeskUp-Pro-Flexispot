@@ -16,7 +16,7 @@ Your desk must have a free RJ45 port on the controller (8 pins):
 
 Below is a list of desks we know should be compatible:
 
-## Summary of Compatible Desks or Controllers
+## Compatible Desks or Controllers
 - Flexispot E7 Mini (the one tested was purchased in 2026 with controller CB38M2M(IB)-1 and keypad HS13G-1)
 - Flexispot E7 Pro (CB38M2M(IB)-4 and keypad HS13G-1) **WORKING STATUS TO BE CONFIRMED**
 
