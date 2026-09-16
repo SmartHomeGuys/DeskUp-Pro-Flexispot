@@ -1,0 +1,937 @@
+# DeskUp Pro Flexispot
+
+# Code for this was originally based on:
+# https://github.com/iMicknl/LoctekMotion_IoT/blob/main/packages/office-desk-esp32.yaml
+
+substitutions:
+  name: deskuppro-flexispot
+  friendly_name: DeskUp Pro Flexispot
+  tx_pin: "GPIO18"              # Ethernet pin 6  green
+  rx_pin: "GPIO20"              # Ethernet pin 5  purple
+  screen_pin: "GPIO19"          # Ethernet pin 4  blue
+  unit_of_measurement: "cm"     # cm or in (It seems it is not possible anymore to change cm to in dynamically from a select box so has to be at compile time)
+  switch_updown_delay: 108ms    # Set the delay to wait for before we keep sending the same desk command (whilst the up or down switch is turned on)
+
+  # Desk max/min heights, below we've set the lowest and heighest to cover all the desks: https://flexispot.co.uk/standing-desks-buyer-guide
+  # And ones which are in inches, but these will be overridden by the 2 boxes in the configuration section anyway to match the users actual desk min/max height
+  # so these are really just the limits of what is allowed to be entered in those 2 text boxes.
+  desk_min_height: "15"         # Min height
+  desk_max_height: "131"        # Max height
+
+esphome: 
+  name: ${name}
+  friendly_name: ${friendly_name}
+  name_add_mac_suffix: true
+  project:
+    name: SmartHomeGuys.DeskUp Pro Flexispot
+    version: "dev"
+  
+  on_boot:
+    - priority: -100
+      then:
+        - script.execute: script_run_on_boot
+
+logger:
+    level: INFO #e.g. NONE, ERROR, WARN, INFO, DEBUG, VERBOSE, VERY_VERBOSE
+
+wifi:
+
+# Enable Home Assistant API
+api:
+  encryption:
+
+ota:
+  - platform: esphome
+    id: ota_esphome
+
+  - platform: http_request
+    id: ota_http_request
+
+http_request:           # This is needed when ota http_request is in the yaml
+
+# For configuring Wi-Fi on an ESPHome device by using a serial connection to the device, eg. USB.
+improv_serial:
+
+# For configuring Wi-Fi on an ESP32 device by using Bluetooth Low Energy (BLE) to receive the credentials 
+# but only allowed if wifi has never been connected before (hardended for RED cyber security requirement)
+esp32_improv:
+  authorizer: none    # Has to be none since device does not have a physical button
+
+# Use the device ip number to view all the entities in a web page, also provides Rest Api capability.
+web_server:
+  port: 80
+  version: 3
+  ota: false
+  auth:
+    type: digest
+    username: !secret webserver_deskuppro_username
+    password: !secret webserver_deskuppro_password
+
+time:
+  - platform: sntp
+    id: sntp_time
+
+
+# Desk code begins
+uart:
+  - id: desk_uart #uart_bus
+    tx_pin: ${tx_pin}
+    rx_pin: ${rx_pin}
+    baud_rate: 9600
+    debug:
+      direction: BOTH
+      dummy_receiver: true
+      after:
+        delimiter: [0x9D]
+      sequence:
+        - lambda: |-
+            //UARTDebug::log_int(direction, bytes, ',');
+            //UARTDebug::log_hex(direction, bytes, ',');
+            //ESP_LOGD("custom", "Bytes size: %d", bytes.size());       // Logs how many bytes in the message, useful for protocol and message identification.
+
+            if (direction == UART_DIRECTION_RX) 
+            {
+              if (bytes.size() == 9)      // Only parse messages with 9 bytes.
+              {
+                uint8_t type = bytes[2];
+                if (type == 0x12) {
+                  // Desk Height Changed (display frame)
+
+                  // Screen went off so ignore this message
+                  if(bytes[3] == 0x00 && bytes[4] == 0x00 && bytes[5] == 0x00)  
+                    return;
+
+                  // If here then a non-zero message was Received
+                  //ESP_LOGD("custom", "Uart - Desk Height Message Received");
+
+                  // Extract payload bytes (3 digits)
+                  uint8_t seg1 = bytes[3];
+                  uint8_t seg2 = bytes[4];
+                  uint8_t seg3 = bytes[5];
+
+                  // Check decimal point bit BEFORE masking it off
+                  bool hasDecimalPoint = (seg2 & 0x80) != 0;
+
+                  // Mask MSB (bit7) only lower 7 bits are segment data
+                  seg1 &= 0x7F;
+                  seg2 &= 0x7F;
+                  seg3 &= 0x7F;
+
+                  auto decode_digit = [](uint8_t seg) {
+                    switch (seg) {
+                      case 0x3F: return 0;
+                      case 0x06: return 1;
+                      case 0x5B: return 2;
+                      case 0x4F: return 3;
+                      case 0x66: return 4;
+                      case 0x6D: return 5;
+                      case 0x7D: return 6;
+                      case 0x07: return 7;
+                      case 0x7F: return 8;
+                      case 0x6F: return 9;
+                      default:   return -1;
+                    }
+                  };
+
+                  int digit1 = decode_digit(seg1);
+                  int digit2 = decode_digit(seg2);
+                  int digit3 = decode_digit(seg3);
+
+                  // Convert height digits into a string
+                  char output[8];
+                  if(hasDecimalPoint)
+                    snprintf(output, sizeof(output), "%d%d.%d", digit1, digit2, digit3);
+                  else
+                    snprintf(output, sizeof(output), "%d%d%d", digit1, digit2, digit3);
+
+                  // Convert string into a decimal number
+                  float height = atof(output);
+
+                  // Write the height to the desk height number control
+                  // When the height cant be decoded the value returned is -1 so ignore it as we dont want to update the height if it's not a height value
+                  if(height != -1) {
+                    if( height != id(number_deskHeight).state) {    // Only update the height sensor if the height has changed, otherwise whilst the screen is on it keeps sending the height to the control
+                      id(number_deskHeight).publish_state(height);
+                      id(saved_deskHeight) = height;                // Store the height in a variable that persists between restarts, this was needed after a restart with the child lock on as the desk does not send height messages until its unlocked
+                    }
+
+                    // Update the Child Lock Sensor to be unlocked if it isn't since a height message is being received it must be unlocked
+                    id(binary_sensor_childlock_locked).publish_state(false);   // Shows as Off (Unlocked)
+                  }
+                  else  // It's not an understood height message e.g it's -1
+                  {
+                    // Could be a child lock message
+                    if(bytes[3] == 0x38 && bytes[4] == 0x5C && bytes[5] == 0x39) {
+                      id(binary_sensor_childlock_locked).publish_state(true);    // Update the Child Lock Sensor to show as On (Locked)
+                    }
+                  }
+                }
+              }
+            }
+
+globals:
+  - id: seconds_idle_counter
+    type: long
+    restore_value: no
+    initial_value: "0"
+
+  # This is used to display the last desk height used between reboots by updating the number_deskHeight control with this value on boot.  
+  # This was needed because when the child lock is used and the controller is restarted no height message is sent so it's last value is read from this variable.
+  - id: saved_deskHeight
+    type: float
+    restore_value: yes
+    initial_value: "0"
+
+script:
+  - id: script_run_on_boot
+    mode: single
+    then:
+      - logger.log: "On boot script running"
+      - logger.log: "Get desk height"
+      - lambda: |-
+          float value = id(saved_deskHeight);
+          if(value > 0)
+            id(number_deskHeight).publish_state(value);
+
+      # Delay UART interaction on boot to give the desk controller time to initialize.
+      # After the delay, wake the desk by sending the "M" command to request the current height.
+      - delay: 10s
+      - button.press: button_wake_screen
+      - delay: 300ms
+      # Instead of using the memory button, switching off & on the virtual screen does the same thing to read the height 
+      # and without changing whats being shown on the display
+      #- button.press: button_m           
+      - switch.turn_off: virtual_screen
+      - delay: 300ms
+      - switch.turn_on: virtual_screen
+
+  # Reset idle counter value to 0
+  - id: script_idle_timer_reset
+    mode: single
+    then:
+      - lambda: |-
+          id(seconds_idle_counter) = 0;
+  
+  # Update the idle timestamp sensor
+  - id: script_set_idle_timestamp
+    parameters:
+      seconds: long
+    mode: single
+    then:
+      - lambda: |-
+          int days = seconds / (24 * 3600);
+          seconds = seconds % (24 * 3600);
+          int hours = seconds / 3600;
+          seconds = seconds % 3600;
+          int minutes = seconds /  60;
+          seconds = seconds % 60;
+
+          std::string daystr = "";
+          if(days) {
+            daystr = to_string(days) + " days, ";
+          }
+
+          std::string value = (std::string)str_sprintf("%s%02d:%02d:%02d", daystr.c_str(), hours, minutes, (int)seconds);
+          id(sensor_desk_idle_timestamp).publish_state(value);
+
+
+  # Script that sends desk commands to the uart bus
+  - id: script_send_desk_command
+    parameters:
+      cmd: string
+    mode: single
+    then:
+      - lambda: |-
+          ESP_LOGD("custom", "Send desk command: %s", cmd.c_str());
+
+      - button.press: button_wake_screen
+      - delay: 200ms
+      - uart.write: 
+          data: !lambda |-
+            if(cmd == "m1")           //preset 1
+              return { 0x9b, 0x06, 0x02, 0x04, 0x00, 0xac, 0xa3, 0x9d };
+            else if(cmd == "m2")      //preset 2
+              return { 0x9b, 0x06, 0x02, 0x08, 0x00, 0xac, 0xa6, 0x9d };
+            else if(cmd == "m3")      //stand
+              return { 0x9b, 0x06, 0x02, 0x10, 0x00, 0xac, 0xac, 0x9d };
+            else if(cmd == "m4")      //sit
+              return { 0x9b, 0x06, 0x02, 0x00, 0x01, 0xac, 0x60, 0x9d };
+            else if(cmd == "nudgeup")     
+              return { 0x9b, 0x06, 0x02, 0x01, 0x00, 0xfc, 0xa0, 0x9d };
+            else if(cmd == "nudgedown")
+              return { 0x9b, 0x06, 0x02, 0x02, 0x00, 0x0c, 0xa0, 0x9d };
+            else if(cmd == "memory")
+              return { 0x9b, 0x06, 0x02, 0x20, 0x00, 0xac, 0xb8, 0x9d };
+            else
+              return {};
+            
+      - logger.log: "Send desk command finished"
+  
+  - id: script_send_desk_stop_command
+    mode: single
+    then:
+      - uart.write: 
+          data: !lambda |-
+            return { 0x9B, 0x06, 0x02, 0x00, 0x00, 0x6C, 0xA1, 0x9D };
+            
+      - logger.log: "Send desk stop command finished"
+
+
+  # Move the desk to the specified height (in percent)
+  - id: script_set_Desk_Height_In_Percent
+    parameters:
+      heightPercentage: int  # 0 to 100 percent
+    mode: single
+    then:
+      - lambda: |-
+          // Calculate the height given a percentage value
+          float minHeight = id(number_deskMinHeight).state;
+          float maxHeight = id(number_deskMaxHeight).state;
+          float heightDiff = maxHeight - minHeight;
+          float heightInPercent = float(heightPercentage) / 100.0;
+          float height = (heightDiff * heightInPercent) + minHeight;
+
+          float value = height;
+          ESP_LOGD("custom", "Setting height to: %f from %d percent. minheight:%f, maxheight:%f, diff:%f, heightinpercent:%f, height:%f", value, heightPercentage, minHeight, maxHeight, heightDiff, heightInPercent, height);
+          id(number_deskHeight).make_call().set_value(value).perform(); 
+
+
+  # Convert the desk height into percent then update the sensor_deskheightpercent value
+  - id: script_update_deskheightpercent_sensor
+    mode: single
+    then:
+      - lambda: |-
+          float height = id(number_deskHeight).state;
+          float minHeight = ${desk_min_height};
+          float maxHeight = ${desk_max_height};
+
+          if (id(number_deskMinHeight).has_state() && !std::isnan(id(number_deskMinHeight).state)) {
+            //Override min height with value from input field (if available)
+            minHeight = id(number_deskMinHeight).state;
+          }
+
+          if (id(number_deskMaxHeight).has_state() && !std::isnan(id(number_deskMaxHeight).state)) {
+            //Override max height with value from input field (if available)
+            maxHeight = id(number_deskMaxHeight).state;
+          }
+
+          float value = 100 * (height - minHeight) / (maxHeight - minHeight);
+          ESP_LOGD("custom", "Updating sensor desk height percent to: %f, height is: %f", value, height);
+          id(sensor_deskheightpercent).publish_state(value);
+
+binary_sensor:
+  - platform: template
+    name: "Child Lock"
+    id: binary_sensor_childlock_locked
+    icon: mdi:lock-open-outline
+
+sensor:
+  # Display the desk height
+  # The value is populated from the number_deskheight control when its value changes
+  - platform: template
+    name: "Desk Height"
+    id: "sensor_deskheight"
+    unit_of_measurement: ${unit_of_measurement}
+    accuracy_decimals: 1
+    icon: mdi:human-male-height-variant
+    update_interval: never
+
+  # Display the desk height in percent
+  # The value is populated from the number_deskheight control when its value changes
+  # which then executes the update_deskheightpercent_sensor script 
+  - platform: template
+    name: "Desk Height Percent"
+    id: "sensor_deskheightpercent"
+    unit_of_measurement: "%"
+    icon: mdi:human-male-height-variant
+    update_interval: never
+  
+    # TODO 4 sensors which show the desk preset height value (M1, M2, M3, M4)
+    # Trouble is the desk does not return them
+
+
+  # Display desk idle time (in seconds) which can then be used in homeassistant  automations
+  # The value for this is populated when the 'Idle Timestamp' text_sensor's value changes
+  - platform: template
+    name: "Idle Time"
+    id: "sensor_desk_idle_time"
+    unit_of_measurement: "s"
+    device_class: "duration"
+    icon: mdi:progress-clock
+    update_interval: never
+
+    # Display the ESP32 device total uptime
+  - platform: uptime
+    type: timestamp
+    name: "ESP32 Uptime"
+    id: "sensor_deviceuptime"
+
+
+text_sensor:
+  # Display desk idle time as 'days and timestamp', for use on homeassistant dashboards
+  # Shows days only if days are > 0
+  # Output format: 2 days, 04:45:02 or just 04:45:02 (if days is 0)
+  # Value is populated from script_idle_timer_tick
+  - platform: template
+    name: "Idle Timestamp"
+    id: "sensor_desk_idle_timestamp"
+    icon: mdi:progress-clock
+    update_interval: never 
+
+  # Displays if the desk is Idle, Raising or Lowering
+  - platform: template
+    name: "Desk Status"
+    id: "sensor_desk_status"
+    icon: mdi:help-network-outline
+    update_interval: 1s
+    lambda: |-
+      static float last_value = 0.0;
+      static bool initialized = false;
+      static std::string last_status = "";
+
+      std::string status;
+
+      if (id(number_deskHeight).has_state() && !std::isnan(id(number_deskHeight).state))
+      {
+        float current_value = id(number_deskHeight).state;
+
+        if (current_value > 0) {   // Desk height is 0 when device is starting up so ignore it
+          if (!initialized) {
+            last_value = current_value;
+            initialized = true;
+            status = "Idle";
+          } else {
+            float delta = current_value - last_value;
+            last_value = current_value;
+
+            if (delta > 0.01) {
+              status = "Raising";
+            } else if (delta < -0.01) {
+              status = "Lowering";
+            } else {
+              status = "Idle";
+            }
+          }
+        } else {
+          status = "Initialising";
+        }
+      } else {
+        status = "Initialising";
+      }
+
+      // Only publish if the status actually changed
+      if (status != last_status) {
+        last_status = status;
+        return status;
+      }
+
+      return {};   // No change to status so don't publish, avoids flooding
+
+button:
+  # Button in homeassistant to reset the idle counter to 0. 
+  # Can be used in a homeassistant automation
+  #   e.g. if the desk is low and you walk into the room restart the desk idle timer
+  - platform: template
+    name: "Reset Idle Timer"
+    id: "button_reset_idle_timer"
+    icon: mdi:progress-clock
+    disabled_by_default: False
+    on_press: 
+      then:
+        - logger.log: Reset Idle Timer Pressed
+        - script.execute: script_idle_timer_reset
+
+  # 4 buttons that do the same as pressing the desk controller preset buttons (M1, M2, M3, M4)
+  - platform: template
+    name: "Desk M1"
+    id: "button_desk_m1"
+    icon: mdi:numeric-1-circle-outline
+    on_press:
+      then:
+        - logger.log: M1 Pressed
+        - if:
+            condition:  # Allow the preset button to be pressed only if the up/down switches are turned off (e.g. desk has finished moving from a slider/cover command)
+              - switch.is_off: switch_up
+              - switch.is_off: switch_down
+            then:
+              - script.execute: 
+                  id: script_send_desk_command
+                  cmd: "m1"
+  
+  - platform: template
+    name: "Desk M2"
+    id: "button_desk_m2"
+    icon: mdi:numeric-2-circle-outline
+    on_press:
+      then:
+        - logger.log: M2 Pressed
+        - if:
+            condition:  # Allow the preset button to be pressed only if the up/down switches are turned off (e.g. desk has finished moving from a slider/cover command)
+              - switch.is_off: switch_up
+              - switch.is_off: switch_down
+            then:
+            - script.execute: 
+                id: script_send_desk_command
+                cmd: "m2"
+
+  - platform: template
+    name: "Desk M3 (Stand)"
+    id: "button_desk_m3"
+    icon: mdi:numeric-3-circle-outline
+    on_press:
+      then:
+        - logger.log: M3 Pressed
+        - if:
+            condition:  # Allow the preset button to be pressed only if the up/down switches are turned off (e.g. desk has finished moving from a slider/cover command)
+              - switch.is_off: switch_up
+              - switch.is_off: switch_down
+            then:
+              - script.execute: 
+                  id: script_send_desk_command
+                  cmd: "m3"
+
+  - platform: template 
+    name: "Desk M4 (Sit)"
+    id: "button_desk_m4"
+    icon: mdi:numeric-4-circle-outline
+    on_press: 
+      then:
+        - logger.log: M4 Pressed 
+        - if:
+            condition:  # Allow the preset button to be pressed only if the up/down switches are turned off (e.g. desk has finished moving from a slider/cover command)
+              - switch.is_off: switch_up
+              - switch.is_off: switch_down
+            then:
+              - script.execute: 
+                  id: script_send_desk_command
+                  cmd: "m4"
+        
+  - platform: template
+    name: "Desk Nudge Up"
+    id: "button_desk_nudgeup"
+    icon: mdi:arrow-up-bold-circle-outline
+    on_press:
+      then:
+        - logger.log: Nudge Up Pressed
+        - if:
+            condition:  # Allow the preset button to be pressed only if the up/down switches are turned off (e.g. desk has finished moving from a slider/cover command)
+              - switch.is_off: switch_up
+              - switch.is_off: switch_down
+            then:
+              - script.execute: 
+                  id: script_send_desk_command
+                  cmd: "nudgeup"
+              - delay: !lambda 'return (int) id(number_deskNudgeDelay).state;'
+              - script.execute: 
+                  id: script_send_desk_stop_command
+  
+  - platform: template
+    name: "Desk Nudge Down"
+    id: "button_desk_nudgedown"
+    icon: mdi:arrow-down-bold-circle-outline
+    on_press:
+      then:
+        - logger.log: Nudge Down Pressed
+        - if:
+            condition:  # Allow the preset button to be pressed only if the up/down switches are turned off (e.g. desk has finished moving from a slider/cover command)
+              - switch.is_off: switch_up
+              - switch.is_off: switch_down
+            then:
+              - script.execute: 
+                  id: script_send_desk_command
+                  cmd: "nudgedown"
+              - delay: !lambda 'return (int) id(number_deskNudgeDelay).state;'
+              - script.execute: 
+                  id: script_send_desk_stop_command
+
+  # This stop button only stops the desk moving if it was started using the height slider or cover control
+  # It has no effect if the memory preset buttons were used (pressing one of those stops the desk immediately too)
+  - platform: template
+    name: "Desk Stop"
+    id: "button_desk_stop"
+    icon: mdi:stop-circle-outline
+    on_press:
+      then:
+        - logger.log: Stop Pressed
+        - button.press: button_wake_screen
+        - delay: 200ms
+        - switch.turn_off: switch_up
+        - switch.turn_off: switch_down
+            
+  
+  # 4 buttons that do the same as pressing the desks M and then one of the height preset buttons
+  # Saves the current desk height to a preset 
+  - platform: template 
+    name: "Set Desk M1"
+    id: "button_desk_set_m1"
+    icon: mdi:numeric-1-circle-outline
+    entity_category: config
+    on_press: 
+      then:
+        - logger.log: Set M1 Pressed 
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "memory"
+        - delay: 500ms
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "m1"
+
+  - platform: template 
+    name: "Set Desk M2"
+    id: "button_desk_set_m2"
+    icon: mdi:numeric-2-circle-outline
+    entity_category: config
+    on_press: 
+      then:
+        - logger.log: Set M2 Pressed 
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "memory"
+        - delay: 500ms
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "m2"
+
+  - platform: template 
+    name: "Set Desk M3 (Stand)"
+    id: "button_desk_set_m3"
+    icon: mdi:numeric-3-circle-outline
+    entity_category: config
+    on_press: 
+      then:
+        - logger.log: Set M3 Pressed 
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "memory"
+        - delay: 500ms
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "m3"
+
+  - platform: template 
+    name: "Set Desk M4 (Sit)"
+    id: "button_desk_set_m4"
+    icon: mdi:numeric-4-circle-outline
+    entity_category: config
+    on_press: 
+      then:
+        - logger.log: Set M4 Pressed 
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "memory"
+        - delay: 500ms
+        - script.execute: 
+            id: script_send_desk_command
+            cmd: "m4"
+
+  - platform: template            # Doesn't work on my controller so probably not needed for newer models, but left the code in anyway incase other controllers do need it
+    name: "Wake screen"
+    id: button_wake_screen
+    icon: mdi:gesture-tap-button
+    entity_category: "config"
+    internal: true
+    on_press:
+      - uart.write:
+          id: desk_uart
+          data: [0x9b, 0x06, 0x02, 0x00, 0x00, 0x6c, 0xa1, 0x9d]
+  
+  # Toggles the Child Lock on/off
+  - platform: template
+    name: "Child Lock"
+    id: "button_desk_childlock"
+    #icon: mdi:arrow-down-bold-circle-outline
+    on_press:
+      then:
+        - logger.log: Child Lock Pressed
+        - button.press: button_wake_screen
+        - delay: 200ms
+        - repeat:                           # Press the Memory button and simulate it being held by sending the same command for 5 seconds
+            count: 50
+            then:
+              - uart.write:
+                  id: desk_uart
+                  data: [0x9b, 0x06, 0x02, 0x20, 0x00, 0xac, 0xb8, 0x9d]  # Memory command
+              - delay: 100ms
+        - logger.log: Child Lock Press Finished
+    
+  # ESP32 Reboot button
+  - platform: restart
+    name: "ESP32 Restart"
+    id: "button_reboot"
+    entity_category: diagnostic
+    disabled_by_default: false
+    device_class: restart
+
+
+# This control is what Google / Alexa etc use to move the desk. Which is why we link this control to the number control for movement and  
+# also because it has a min / max height set which should be what you want your desk to be set to for your normal sit/stand heights.
+# The cover will then only move to those user defined min/max heights.
+cover:
+  - platform: template
+    id: "desk_cover"
+    name: "Height Slider"
+    has_position: true   #shows its position (not just open/closed)
+    assumed_state: true  #show open and close buttons in the ui
+    
+    open_action:    # Cover Up button pressed
+      - logger.log: "Cover opening"
+      - lambda: |- 
+          float maxHeight = id(number_deskMaxHeight).state;
+          id(number_deskHeight).make_call().set_value(maxHeight).perform();      // This limits the slider to the configured max height
+
+    close_action:   # Cover Down button pressed
+      - logger.log: "Cover closing"
+      - lambda: |- 
+          float minHeight = id(number_deskMinHeight).state;
+          id(number_deskHeight).make_call().set_value(minHeight).perform();      // This limits the slider to the configured min height
+
+    stop_action:
+      - logger.log: "Cover stop pressed"
+      - switch.turn_off: switch_up
+      - switch.turn_off: switch_down
+
+    position_action: 
+      then:
+        - logger.log: 
+            format: "Moving desk to position %.2f" 
+            args: ["pos"]   # e.g. 0.51
+
+        # pos variable returns a value between 0.0 and 1.0 need to convert it into a 0 to 100 percentage value
+        - lambda: |-
+            int newHeightPercent = pos * 100;
+            id(script_set_Desk_Height_In_Percent).execute(newHeightPercent);
+ 
+    lambda: !lambda |-
+     int currentHeightPercent = (int) id(sensor_deskheightpercent).state;
+     if(currentHeightPercent == 100)
+       return COVER_OPEN;
+     else if(currentHeightPercent == 0)
+       return COVER_CLOSED;
+     else {
+       // Cover would be partially open so we return the height value which must be between 0.0 and 1.0
+       return currentHeightPercent / 100.0;
+     }
+
+
+number:
+  # This control is used to store the desk height and is also used by the cover control to move the desk
+  # It also limits this slider and the cover control to only move within it's min/max height.
+  # Nudge buttons and Memory preset buttons can always go beyond this range up to the maximum physically allowed by the desk itself.
+  - platform: template
+    name: "Desk Height"
+    id: "number_deskHeight"
+    min_value: ${desk_min_height}
+    max_value: ${desk_max_height}
+    step: 0.1
+    unit_of_measurement: ${unit_of_measurement}
+    mode: slider
+    internal: false    # expose to Homeassistant as a control
+  
+    # When moving the slider in the ui move the desk to that height
+    # It's not 100% accurate but pretty close with tuning using the min/max height configuration fields. Although sometimes still does overshoot by a couple of cm
+    set_action:
+      - lambda: |- 
+          ESP_LOGD("custom", "Number Slider is setting height to %.1f, current Desk Height is %f", x, id(number_deskHeight).state);        
+      
+      - if:
+          condition:
+            - lambda: !lambda |-
+                return x > id(number_deskHeight).state;
+          then:
+            - if:
+                condition:
+                  - lambda: !lambda |-
+                      return id(binary_sensor_childlock_locked).state == false;            // Only try and turn the up switch on if the child lock is disabled
+                then:
+                  - switch.turn_on: switch_up
+                  - wait_until:
+                      lambda: |-
+                        float go_up_offset = id(number_deskOffsetGoUp).state;   
+                        return (id(number_deskHeight).state + go_up_offset) >= x;           // 1.3 seems to be a good value
+                  - switch.turn_off: switch_up
+          else:
+            - if:
+                condition:
+                  - lambda: !lambda |-
+                      return id(binary_sensor_childlock_locked).state == false;            // Only try and turn the down switch on if the child lock is disabled
+                then:
+                  - switch.turn_on: switch_down
+                  - wait_until:
+                      lambda: |-
+                        float go_down_offset = id(number_deskOffsetGoDown).state;         
+                        return (id(number_deskHeight).state - go_down_offset) <= x;         // 1.0 seems to be a good number. Usually 0.1 to 0.2 out
+                  - switch.turn_off: switch_down
+
+    on_value:
+      then:
+        # Update the 2 height sensors with the new height value
+        # And reset the desk idle counter back to 0
+        - lambda: |-
+            id(sensor_deskheight).publish_state(x);
+            id(script_update_deskheightpercent_sensor).execute();
+            id(script_idle_timer_reset).execute();
+
+
+  # Text box to manually change the minimum desk height value
+  - platform: template
+    name: "Min Height"
+    id: "number_deskMinHeight"
+    unit_of_measurement: ${unit_of_measurement}
+    min_value: ${desk_min_height}
+    max_value: ${desk_max_height}
+    step: 0.01
+    initial_value: ${desk_min_height}
+    mode: box
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    icon: "mdi:desk"
+    entity_category: config   
+    on_value:
+      then:
+        # Update the desk height number control with the new min value entered
+        lambda: |
+          id(number_deskHeight)->traits.set_min_value(x);
+          id(script_update_deskheightpercent_sensor).execute();
+
+  # Text box to manually change the maximum desk height value
+  - platform: template
+    name: "Max Height"
+    id: "number_deskMaxHeight"
+    unit_of_measurement: ${unit_of_measurement}
+    min_value: ${desk_min_height}
+    max_value: ${desk_max_height}
+    step: 0.1
+    initial_value: ${desk_max_height}
+    mode: box
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    icon: "mdi:desk"
+    entity_category: config
+    on_value:
+      then:
+        # Update the desk height number control with the new max value entered
+        lambda: |
+          id(number_deskHeight)->traits.set_max_value(x);
+          id(script_update_deskheightpercent_sensor).execute();
+
+
+  # Text box to manually offset the height valued used when raising the desk
+  - platform: template
+    name: "Offset Up by"
+    id: "number_deskOffsetGoUp"
+    unit_of_measurement: ${unit_of_measurement}
+    min_value: 0
+    max_value: 40
+    step: 0.1
+    initial_value: 0
+    mode: box
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    icon: "mdi:desk"
+    entity_category: config
+
+  # Text box to manually offset the height valued used when lowering the desk
+  - platform: template
+    name: "Offset Down by"
+    id: "number_deskOffsetGoDown"
+    unit_of_measurement: ${unit_of_measurement}
+    min_value: 0
+    max_value: 40
+    step: 0.1
+    initial_value: 0
+    mode: box
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    icon: "mdi:desk"
+    entity_category: config
+
+  # Text box to manually add a delay (in ms) when the nudge up/down controls are used. It's only used on these 2 controls.
+  # This was key to preventing the nudge command just moving its default height when 1 height hex command is sent.
+  # The default height seems to vary but on average going up by 4.3 (+-0.1) and going down by 3.7 (+-0.4)
+  - platform: template
+    name: "Nudge Delay"
+    id: "number_deskNudgeDelay"
+    unit_of_measurement: "ms"
+    min_value: 0
+    max_value: 700
+    step: 1
+    initial_value: 400      # 400 seems to be a good number (nudge up then moves on average 0.6mm and nudge down 0.5)
+    mode: box
+    update_interval: never
+    optimistic: true
+    restore_value: true
+    icon: "mdi:sleep"
+    entity_category: config
+
+
+switch:
+  # Virtual Screen pin is always enabled and never turned off. Turning if off stops any commands being sent to the controller from ESPHome
+  - platform: gpio
+    name: "Virtual screen" # PIN20
+    id: virtual_screen
+    pin:
+      number: ${screen_pin}
+      mode: OUTPUT
+    restore_mode: ALWAYS_ON
+    entity_category: "config"
+    internal: false #true
+
+  - platform: uart
+    name: "Up"
+    id: switch_up
+    icon: mdi:arrow-up-bold
+    data: [0x9b, 0x06, 0x02, 0x01, 0x00, 0xfc, 0xa0, 0x9d]
+    uart_id: desk_uart
+    send_every: ${switch_updown_delay}
+    internal: true
+    on_turn_on:
+      - button.press: button_wake_screen
+      - delay: 200ms
+    on_turn_off:
+      - script.execute: 
+          id: script_send_desk_stop_command
+
+  - platform: uart
+    name: "Down"
+    id: switch_down
+    icon: mdi:arrow-down-bold
+    data: [0x9b, 0x06, 0x02, 0x02, 0x00, 0x0c, 0xa0, 0x9d]
+    uart_id: desk_uart
+    send_every: ${switch_updown_delay}
+    internal: true
+    on_turn_on:
+      - button.press: button_wake_screen
+      - delay: 200ms
+    on_turn_off:
+      - script.execute: 
+          id: script_send_desk_stop_command
+
+  - platform: template
+    name: "Enable Idle Counter"
+    id: "switch_enable_idle_counter"
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    icon: "mdi:progress-clock"
+    entity_category: config
+
+
+interval:
+  # Update idle time sensors
+  - interval: 1s
+    id: "interval_sensors"
+    then:
+      lambda: |-
+        id(seconds_idle_counter) += 1;
+        long seconds = id(seconds_idle_counter);
+
+        if(id(switch_enable_idle_counter).state == true)    // Only send updates to the idle time sensors if the switch is enabled
+        {
+          // Update time related sensors
+          id(sensor_desk_idle_time).publish_state(seconds);
+          id(script_set_idle_timestamp).execute(seconds);
+        }

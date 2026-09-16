@@ -1,0 +1,29 @@
+# This yaml is for the SeeedStudio XIAO ESP32-C6
+
+packages:
+  device_base: !include base.yaml
+
+esp32:
+  board: seeed_xiao_esp32c6
+  variant: esp32c6
+
+esphome:
+  on_boot:
+    - priority: 800
+      then:
+        - output.turn_off: GPIO03   # enable setting the antenna to internal or external. This activates the RF switch control
+
+wifi:
+  power_save_mode: NONE
+  output_power: 9.5dB
+
+output:
+  # Enables setting the wifi antenna to external or internal. This activates the RF switch control.
+  - platform: gpio
+    id: "GPIO03"
+    pin: GPIO03
+
+status_led:
+  pin:
+    number: GPIO15
+    inverted: true
