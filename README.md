@@ -21,7 +21,7 @@ All the existing functionality of the desk's controller is retained.  Connect th
     <img src="images/HomeAssistant-Controls.png" height="450px" />
 </p>
 
-30 entities are exposed in Home Assistant that let you control every function of the DeskUp Pro Flexispot.
+29 entities are exposed in Home Assistant that let you control every function of the DeskUp Pro Flexispot.
 
 ## Homey Pro App (coming soon to the app store December 2026)
 <p align="center">
