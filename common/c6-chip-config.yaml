@@ -1,4 +1,4 @@
-# This yaml is for the SeeedStudio XIAO ESP32-C6
+# This yaml is for the SeeedStudio XIAO ESP32-C6.
 
 packages:
   device_base: !include base.yaml
