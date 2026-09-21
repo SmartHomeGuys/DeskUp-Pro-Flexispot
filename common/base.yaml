@@ -24,7 +24,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: SmartHomeGuys.DeskUp Pro Flexispot
-    version: "dev2"
+    version: "2026.9.1"
   
   on_boot:
     - priority: -100
