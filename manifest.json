@@ -1,6 +1,6 @@
 {
     "name":  "DeskUp Pro Flexispot",
-    "version":  "2026.9.0",
+    "version":  "2026.9.01",
     "home_assistant_domain":  "esphome",
     "new_install_skip_erase":  false,
     "builds":  [
