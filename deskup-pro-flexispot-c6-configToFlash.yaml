@@ -1,0 +1,34 @@
+substitutions:
+  name: deskuppro-flexispot
+  friendly_name: DeskUp Pro Flexispot
+
+packages:
+  #device_base: !include common/c6-chip-config.yaml
+  device_base:
+    url: https://github.com/SmartHomeGuys/DeskUp-Pro-Flexispot
+    files: [common/c6-chip-config.yaml]
+    ref: main
+    refresh: 1min
+
+logger:
+  level: INFO
+
+update:
+  - platform: http_request
+    id: update_http_request
+    name: Desk Firmware
+    source: https://smarthomeguys.github.io/DeskUp-Pro-Flexispot/manifest.json
+    disabled_by_default: false
+    update_interval: 12h
+
+dashboard_import:
+  package_import_url: github://SmartHomeGuys/DeskUp-Pro-Flexispot/deskup-pro-flexispot-c6.yaml@main
+  import_full_config: false
+
+# Add OTA Encryption so firmware files are signed by us
+esp32:
+  framework:                        
+    advanced:
+      signed_ota_verification:
+        signing_key: ota_signing_key.pem
+        signing_scheme: rsa3072
