@@ -1,6 +1,6 @@
 {
     "name":  "DeskUp Pro Flexispot",
-    "version":  "2026.9.3",
+    "version":  "2026.9.4",
     "home_assistant_domain":  "esphome",
     "new_install_skip_erase":  false,
     "builds":  [
@@ -13,7 +13,7 @@
                                      }
                                  ],
                        "ota":  {
-                                   "md5":  "2bac40d7eca792422d210ada427602c3",
+                                   "md5":  "f58773324e279d050eb45372b1502d96",
                                    "path":  "firmware-c6/deskup-pro-flexispot.ota.bin",
                                    "release_url":  "https://github.com/SmartHomeGuys/DeskUp-Pro-Flexispot/blob/main/CHANGELOG.md",
                                    "summary":  ""
