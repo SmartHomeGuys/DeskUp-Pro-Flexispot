@@ -6,6 +6,11 @@ packages:
 esp32:
   board: seeed_xiao_esp32c6
   variant: esp32c6
+  framework:                        # Most people can just remove this section as its just used by us when creating ota firmware packages
+    advanced:
+      signed_ota_verification:
+        signing_key: ota_signing_key.pem
+        signing_scheme: rsa3072
 
 esphome:
   on_boot:
