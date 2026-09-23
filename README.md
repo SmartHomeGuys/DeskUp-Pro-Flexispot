@@ -133,10 +133,10 @@ Log an issue to this Git Repo and we will try to help, or even better submit a p
 ## Why did I start this project?
 I originally wrote the <a href="https://github.com/SmartHomeGuys/DeskUp-Pro-Controller-RJ12" target="_new">DeskUp Pro RJ12</a> because I was finding I sat down at my desk too much and this was causing Sciatica so I wanted to integrate the desk into my Smart Home System and have Alexa nag me to stand up more!
 
-My partner then said they wanted a standing desk for similar reasons so I thought why buy the same desk when I can do another cool project with a Flexispot desk whilst trying to port over as many features as possible from the original Desk Up Pro.
+My partner then said they wanted a standing desk for similar reasons so I thought why buy the same desk when I can do another project with a Flexispot desk whilst trying to retain as many features as possible from the original Desk Up Pro.
 
 That's when I decided to do the same I did with the original DeskUp Pro:
-- Fully document everything I have done into this Git repository.
+- Fully document everything I have done in this Git repository.
 - Make the device accessible not only to Home Assistant but to any Smart Home system that can call a Rest Api.
 - Sell DeskUp Pro Flexispot devices to anyone that just wants to plug it in and start automating, but in the spirit of open source if you want to build your own all the details to do that are in here too.
 
