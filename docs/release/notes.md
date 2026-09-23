@@ -1,0 +1,36 @@
+
+### Notes on how to flash the latest version to a new device for a customer
+- Make sure in Home Assistant the 'DeskUp Pro' does not exist as a device or under ESPHome Builder.
+- In a Chrome browser go to: https://smarthomeguys.github.io/DeskUp-Pro-Flexispot/Setup.html
+- Choose the 'Install' option, connect it to Wi-Fi
+- Test the device on a desk.
+- After testing, reflash the device again using the 'Install' option but this time 'Skip' adding it to Wi-Fi.
+- Unplug and package up for shipping.
+- Remove the 'DeskUp Pro' device from Home Assistant so it does not exist as a device under integrations or under ESPHome Builder.
+
+
+
+### Notes on how to release a new version
+- Make code changes locally (avoiding using Git) on a development version of a DeskUp Pro device.
+- No need to worry about version numbers at this point.
+
+- Once development is complete update the base.yaml with a new version number.
+- Install again onto the development device and check the new version number is there.
+- Copy the changed files from Home Assistant's local folder into the Git folder (locally on a laptop).
+- Update CHANGELOG.md
+- Commit and push to GitHub.
+- Wait 1 minute for any local GitHub cached files to expire from cache.
+
+
+- Run powershell command BuildDeskUpProFlexispotRelease.ps1 found in c:\[userfolder]\esphome
+- This will build a firmware version.
+
+  - In VSCode the 2 bin files and a firmware.md5 file should already be listed under commits. 
+  - Update the version number in the manifest.json file
+  - Wait until the the code changes are committed to Git for 24 hours due to caching in user's Home Assistant's files downloaded from Git.
+  - Now check these files into Git
+
+- Draft then publish a new Release version in Github using the changelog notes as its content, making sure to add a tag and setting this as the latest version.
+https://github.com/SmartHomeGuys/DeskUp-Pro-Flexispot/releases
+
+- Users Home Assistant clients should now start saying an updated version is available to install.
