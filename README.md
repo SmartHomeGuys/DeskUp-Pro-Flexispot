@@ -102,7 +102,7 @@ DeskUp Pro Flexispot will always remain open source and in this Github repositor
 - Instructions on how to build/wire up the ESP32.
 - The full source code to control the desk written using community reverse engineered desk logic (from multiple git repos) we pulled together what we thought were the best bits into this project.
 - We decided to make this a yaml only version of the code to make it easier for non c++ programmers to understand and change.
-- Then added a number of our own features to it from our popular DeskUp Pro RJ12 product.
+- Then added a number of our own features to it and reused some from our popular DeskUp Pro RJ12 product.
 - You will need to use ESPHome Builder in Home Assistant to follow our guide.
 
 However if you would prefer to avoid:
