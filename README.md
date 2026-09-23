@@ -72,7 +72,7 @@ Before you proceed check the compatibility of your desk.  You should understand 
 - Flexispot E7 Mini (controller CB38M2M(IB)-1 and keypad HS13G-1)
 - Flexispot E7 Pro (controller CB38M2M(IB)-4 and keypad HS13G-1)
 
-
+_If your desk is not on the list we cannot advise on its compatibility until someone tries it. Which is why we ask that if you do try the DeskUp Pro Flexispot and your desk is not on our list please let us know so we can add it here to help others._
 
 ### Specs
 - The firmware of the DeskUp Pro is based on ESPHome
