@@ -1,5 +1,7 @@
 # DeskUp Pro Flexispot
-Making FlexiSpot Standing Desks with an RJ45 Port Smart with ESPHome
+Making FlexiSpot Standing Desks with an RJ45 Port Smart with ESPHome.
+
+***This repository is for Flexispot desks only, if you are looking for the DeskUp Pro for desks with an RJ12 port <a href="https://smarthomeguys.github.io/DeskUp-Pro-Controller-RJ12/">click here</a>.***
 
 <table border="0">
   <tr>
