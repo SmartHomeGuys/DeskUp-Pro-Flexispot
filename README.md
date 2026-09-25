@@ -18,6 +18,13 @@ DeskUp Pro Flexispot has full integration with Home Assistant, with a Homey Pro 
 
 All the existing functionality of the desk's controller is retained.  Connect the DeskUp Pro Flexispot to Wi-Fi, plug it into your desk controller and control your desk from your smart home system.
 
+## There are other Flexispot repositories out there what's different about this one?
+- We pulled together what we thought were the best bits from each into this project.
+- We decided to make this a yaml only version of the code to make it easier for non c++ programmers to understand and change.
+- We added a number of our own features to it such as improving the nudge button so it doesn't move its default of around 4cm which isnt really a nudge but one that can be configured by you to be alot less.
+- We reused some features from our popular DeskUp Pro RJ12 product and made the UI very similar including being able to configure everything from the UI instead of config, except for setting the device to cm or inches.
+- Enabled the web server/API so non Home Assistant smarthome users can use it too.
+
 ## What is shown in Home Assistant
 <p align="center">
     <img src="images/HomeAssistant-Controls.png" height="450px" />
@@ -70,7 +77,7 @@ Before you proceed check the compatibility of your desk.  You should understand 
 - E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 - 2026 model
 - E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 - 2026 model
 
-### Very likely to be compatible with the DeskUp Pro code
+### Desks very likely to be compatible with the DeskUp Pro code
 Desks in this section haven't been tested on the code in this repo yet but from what we can tell it should be compatible.
 
 _If you try the DeskUp Pro Flexispot on any of the desks below or on any not listed please let us know by creating a pull request or open an issue so we can add it here to help others_
@@ -90,7 +97,7 @@ _If your desk is not on the list we cannot advise on its compatibility until som
 - E5 Standard
 
 ### Specs
-- The firmware of the DeskUp Pro is based on ESPHome
+- The firmware of the DeskUp Pro Flexispot is based on ESPHome
 - The device itself uses an ESP32-C6 chip that is powered by the desk's controller over the RJ45 Cable, so no USB cable is needed to power it.
 - Has a USB-C port for setup.
 - Wi-Fi protocol used is 2.4ghz.
@@ -128,7 +135,7 @@ And would simply like to get the device pre-built, in a box that you can plug in
 
 <p align="center">
 
-    Estimated to be available in the store by end of October/November 2026
+    Estimated to be available in the store by end of October 2026
 
 </p>
 
@@ -141,7 +148,7 @@ And would simply like to get the device pre-built, in a box that you can plug in
 [Configure the device for your smart home hub](docs/configuration/README.md)
 
 ## Need Help
-Log an issue to this Git Repo and we will try to help, or even better submit a pull request with the change.
+Log an issue to this Git Repo and we will try to help if we can, or even better submit a pull request with the change.
 
 ## Why did I start this project?
 I originally wrote the <a href="https://github.com/SmartHomeGuys/DeskUp-Pro-Controller-RJ12" target="_new">DeskUp Pro RJ12</a> because I was finding I sat down at my desk too much and this was causing Sciatica so I wanted to integrate the desk into my Smart Home System and have Alexa nag me to stand up more!
