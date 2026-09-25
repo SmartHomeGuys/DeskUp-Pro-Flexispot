@@ -28,13 +28,17 @@ To automate your desk, what we are going to make is the cable below with an RJ45
 | PIN 8 | Brown | Brown | 5V |
 
 
-TODO: Add PICS
+![](images/Diy2.jpg)
+![](images/Diy3.jpg)
 
 
 ## 3D Print a Box
 Design your own enclosure.
 
 ## Home Assistant Configuration
+if you used the same SeeedStudio XIAO ESP32-C6 and gpio pins as us you can just flashbthe device using our firmware from here: 
+
+
 You first need to setup the ESP32 in Home Assistant which can be done within Home Assistant using ESPHome Builder.
 
 You will need to do this from a laptop/PC. Attach the ESP32 via a USB-C cable to a USB-A or C port on your laptop and then click add a ‘New Device’ and follow the prompts.
