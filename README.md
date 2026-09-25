@@ -14,13 +14,9 @@ Making FlexiSpot Standing Desks Smart with ESPHome.
 
 If your Flexispot standing desk controller has a spare RJ45 port use DeskUp Pro Flexispot to integrate your desk with your smart home automation system to control your standing desk from your phone, dashboards, automations or voice.
 
-DeskUp Pro Flexispot has full integration with Home Assistant but any smart home hub that can send a Rest Api request is also supported using its [Api](docs/configuration/rest-api.md).
+DeskUp Pro Flexispot has full integration with Home Assistant, with a Homey Pro App coming in 2026, but any smart home hub that can send a Rest Api request is also supported using its [Api](docs/configuration/rest-api.md).
 
 All the existing functionality of the desk's controller is retained.  Connect the DeskUp Pro Flexispot to Wi-Fi, plug it into your desk controller and control your desk from your smart home system.
-
-## Can I buy one?
-We are working to provide prebuilt devices on our store, our current estimate is by end of October/November 2026.
-
 
 ## What is shown in Home Assistant
 <p align="center">
@@ -60,7 +56,7 @@ Every function of the DeskUp Pro Flexispot can be controlled using its [Api](doc
 
 
 ## ⚠️ Check Compatibility
-- There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as desk manufacturers can change their specifications.
+- There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as the desk manufacturer could change their specifications.
 
 - This is a product of reverse engineering, so until you try it on your desk there is no way to be 100% certain that it will or won't work.
 
@@ -76,14 +72,14 @@ Before you proceed check the compatibility of your desk.  You should understand 
 
 **Very likely to be compatible with the DeskUp Pro code:**
 - E7 - controller CB38M2J(IB)-1 and keypad HS13B-1
-<a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs13b-1">Confirmed to use the same pins in the iMicknl repo</a>
+<a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs13b-1">Confirmed this uses the same controller pins as us and was listed in the iMicknl repo</a>
 
-- E5B - Controller CB38M2A-1 and keypad HS01B-1 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs01b-1">Confirmed to use the same pins in the iMicknl repo</a>
+- E5B - Controller CB38M2A-1 and keypad HS01B-1 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs01b-1">Confirmed this uses the same controller pins as us and was listed in the iMicknl repo</a>
 
-_If your desk is not on the list we cannot advise on its compatibility until someone tries it. Which is why we ask that if you do try the DeskUp Pro Flexispot and your desk is not on our list please let us know so we can add it here to help others._
+_If your desk is not on the list we cannot advise on its compatibility until someone tries it. Which is why we ask that if you do try the DeskUp Pro Flexispot and your desk is not on our list please let us know by creating a pull request or open an issue so we can add it here to help others._
 
 ### Incompatible Desks or Controllers 
-- EK5 - Controller CB38M2B(IB)-1 and keypad HS13A-1 (has different wiring)
+- EK5 - Controller CB38M2B(IB)-1 and keypad HS13A-1 (has different wiring was mentioned on the iMicknl repo).
 
 
 ### Specs
