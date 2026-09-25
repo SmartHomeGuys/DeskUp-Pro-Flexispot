@@ -66,21 +66,28 @@ Every function of the DeskUp Pro Flexispot can be controlled using its [Api](doc
 
 Before you proceed check the compatibility of your desk.  You should understand the risks before purchasing or building the diy option, it's your responsibility to determine if its fit for your purpose. 
 
-### Compatible Desks or Controllers (Confirmed by the community)
+### Compatible Desks or Controllers (Confirmed by us and the community)
 - E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 - 2026 model
 - E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 - 2026 model
 
-**Very likely to be compatible with the DeskUp Pro code:**
+### Very likely to be compatible with the DeskUp Pro code
+Desks in this section haven't been tested on the code in this repo yet but from what we can tell it should be compatible.
+
+_If you try the DeskUp Pro Flexispot on any of the desks below or on any not listed please let us know by creating a pull request or open an issue so we can add it here to help others_
+
+- Any other E7 2026 model with a spare RJ45 port e.g Standard, Flow, E7Q
+
 - E7 - controller CB38M2J(IB)-1 and keypad HS13B-1
 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs13b-1">Confirmed this uses the same controller pins as us and was listed in the iMicknl repo</a>
 
 - E5B - Controller CB38M2A-1 and keypad HS01B-1 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs01b-1">Confirmed this uses the same controller pins as us and was listed in the iMicknl repo</a>
 
-_If your desk is not on the list we cannot advise on its compatibility until someone tries it. Which is why we ask that if you do try the DeskUp Pro Flexispot and your desk is not on our list please let us know by creating a pull request or open an issue so we can add it here to help others._
+_If your desk is not on the list we cannot advise on its compatibility until someone tries it and tells us to update these lists._
 
 ### Incompatible Desks or Controllers 
 - EK5 - Controller CB38M2B(IB)-1 and keypad HS13A-1 (has different wiring was mentioned on the iMicknl repo).
-
+- E1 Pro
+- E5 Standard
 
 ### Specs
 - The firmware of the DeskUp Pro is based on ESPHome
