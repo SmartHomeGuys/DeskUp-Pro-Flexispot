@@ -1,5 +1,7 @@
-# DeskUp-Pro-Flexispot
-Making FlexiSpot Standing Desks with an RJ45 Port Smart with ESPHome
+# DeskUp Pro Flexispot
+Making FlexiSpot Standing Desks Smart with ESPHome.
+
+***This repository is for Flexispot desks only, if you are looking for the DeskUp Pro for desks with an RJ12 port <a href="https://smarthomeguys.github.io/DeskUp-Pro-Controller-RJ12/">click here</a>.***
 
 <table border="0">
   <tr>
@@ -16,6 +18,10 @@ DeskUp Pro Flexispot has full integration with Home Assistant but any smart home
 
 All the existing functionality of the desk's controller is retained.  Connect the DeskUp Pro Flexispot to Wi-Fi, plug it into your desk controller and control your desk from your smart home system.
 
+## Can I buy one?
+We are working to provide prebuilt devices on our store, our current estimate is by end of October/November 2026.
+
+
 ## What is shown in Home Assistant
 <p align="center">
     <img src="images/HomeAssistant-Controls.png" height="450px" />
@@ -23,10 +29,10 @@ All the existing functionality of the desk's controller is retained.  Connect th
 
 29 entities are exposed in Home Assistant that let you control every function of the DeskUp Pro Flexispot.
 
-## Homey Pro App (coming soon to the app store December 2026)
+## Homey Pro App (estimated to be in the app store December 2026)
 <p align="center">
 
-    TODO: Add images (when available)
+    Images will be added here as we build each screen
 
 </p>
 
@@ -49,19 +55,36 @@ Every function of the DeskUp Pro Flexispot can be controlled using its [Api](doc
 - At the end of the working day lower the desk when you turn off the office light or leave the room.
 - Setup a dashboard on your smart home hub so you can have an unlimited number of preset height buttons e.g. maybe each family member prefers a different sit & stand desk height.
 - Want to control your desk from something else then as long as it can either integrate with Home Assistant or call a Rest Api you can.
+- If you work at a company maybe you could automatically raise all the desks in the office to help the cleaners vacuum underneath easier.
 - etc, there are many possibilities.
 
 
 ## ⚠️ Check Compatibility
-There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as desk manufacturers can change their specifications at anytime.
+- There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as desk manufacturers can change their specifications.
 
 - This is a product of reverse engineering, so until you try it on your desk there is no way to be 100% certain that it will or won't work.
 
-- A Flexispot standing desk that has a free RJ45 port could be compatible.
+- Your desk must have a free RJ45 port on the controller (8 pins).
+  - Usually the controller will indicate an RJ45 with an 'HS' next to it.
+  - This project does not support Flexispot desks with just 1 RJ45 socket (we haven't looked into a passthrough option yet)
 
-- Before you proceed check the compatibility of your [desk here](docs/compatibility.md).
+Before you proceed check the compatibility of your desk.  You should understand the risks before purchasing or building the diy option, it's your responsibility to determine if its fit for your purpose. 
 
-You should understand the risks before purchasing, it's your responsibility to determine if its fit for your purpose. 
+### Compatible Desks or Controllers (Confirmed by the community)
+- E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 - 2026 model
+- E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 - 2026 model
+
+**Very likely to be compatible with the DeskUp Pro code:**
+- E7 - controller CB38M2J(IB)-1 and keypad HS13B-1
+<a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs13b-1">Confirmed to use the same pins in the iMicknl repo</a>
+
+- E5B - Controller CB38M2A-1 and keypad HS01B-1 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs01b-1">Confirmed to use the same pins in the iMicknl repo</a>
+
+_If your desk is not on the list we cannot advise on its compatibility until someone tries it. Which is why we ask that if you do try the DeskUp Pro Flexispot and your desk is not on our list please let us know so we can add it here to help others._
+
+### Incompatible Desks or Controllers 
+- EK5 - Controller CB38M2B(IB)-1 and keypad HS13A-1 (has different wiring)
+
 
 ### Specs
 - The firmware of the DeskUp Pro is based on ESPHome
@@ -73,21 +96,15 @@ You should understand the risks before purchasing, it's your responsibility to d
 ### More Product Images and Dimensions
 <p align="center">
 
-    TODO: Add images
+    Will be added here as they become available 
 
 </p>
 
 ### What's in the box if I bought one?
-- DeskUp Pro Flexispot device with RJ45 cable flashed with the latest firmware
+- DeskUp Pro Flexispot device flashed with the latest firmware
 - Housed in a 3D printed case
+- RJ45 cable (Optional)
 - Getting started guide
-
-### We test every device before we ship it
-- After building a device we flash it with the latest firmware.
-- We plug it into one of our desks and connect it to Home Assistant where we check the device reads the sensor values from the desk and the controls move the desk.
-- We unplug and plug the device back in multiple times to check the cable and components are connected securely.
-- Finally we reflash the firmware and package it up in bubble wrap for shipping.
-
 
 ## Prefer to build one yourself 
 DeskUp Pro Flexispot will always remain open source and in this Github repository you can find:
@@ -95,7 +112,7 @@ DeskUp Pro Flexispot will always remain open source and in this Github repositor
 - Instructions on how to build/wire up the ESP32.
 - The full source code to control the desk written using community reverse engineered desk logic (from multiple git repos) we pulled together what we thought were the best bits into this project.
 - We decided to make this a yaml only version of the code to make it easier for non c++ programmers to understand and change.
-- Then added a number of our own features to it from our popular DeskUp Pro RJ12 product.
+- Then added a number of our own features to it and reused some from our popular DeskUp Pro RJ12 product.
 - You will need to use ESPHome Builder in Home Assistant to follow our guide.
 
 However if you would prefer to avoid:
@@ -108,7 +125,7 @@ And would simply like to get the device pre-built, in a box that you can plug in
 
 <p align="center">
 
-    Estimated to be available on the store by end of 2026
+    Estimated to be available in the store by end of October/November 2026
 
 </p>
 
@@ -126,10 +143,10 @@ Log an issue to this Git Repo and we will try to help, or even better submit a p
 ## Why did I start this project?
 I originally wrote the <a href="https://github.com/SmartHomeGuys/DeskUp-Pro-Controller-RJ12" target="_new">DeskUp Pro RJ12</a> because I was finding I sat down at my desk too much and this was causing Sciatica so I wanted to integrate the desk into my Smart Home System and have Alexa nag me to stand up more!
 
-My partner then said they wanted a standing desk for similar reasons so I thought why buy the same desk when I can do another cool project with a Flexispot desk whilst trying to port over as many features as possible from the original Desk Up Pro.
+My partner then said they wanted a standing desk for similar reasons so I thought why buy the same desk when I can do another project with a Flexispot desk whilst trying to retain as many features as possible from the original Desk Up Pro.
 
 That's when I decided to do the same I did with the original DeskUp Pro:
-- Fully document everything I have done into this Git repository.
+- Fully document everything I have done in this Git repository.
 - Make the device accessible not only to Home Assistant but to any Smart Home system that can call a Rest Api.
 - Sell DeskUp Pro Flexispot devices to anyone that just wants to plug it in and start automating, but in the spirit of open source if you want to build your own all the details to do that are in here too.
 
