@@ -6,6 +6,12 @@ To do this choose from one of these options:
 TODO [Setup using Bluetooth (for Home Assistant users with a Bluetooth proxy)](setup-using-bluetooth.md)
 
 TODO [Setup using USB](setup-using-usb.md)
+To do this choose from one of these options:
+
+[Setup using Bluetooth (for Home Assistant users with a Bluetooth proxy)](setup-using-bluetooth.md)
+
+TODO [Setup using USB](setup-using-usb.md)
+
 
 
 ## Step 2: Add to Home Assistant (optional)
