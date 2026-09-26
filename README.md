@@ -135,7 +135,7 @@ And would simply like to get the device pre-built, in a box that you can plug in
 
 <p align="center">
 
-    Estimated to be available in the store by end of October 2026
+    Estimated to be available in the store by end of November 2026
 
 </p>
 
