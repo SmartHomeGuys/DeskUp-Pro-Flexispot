@@ -24,7 +24,7 @@ cards:
     name: Flexispot Desk
     template: section-heading
   - type: custom:button-card
-    entity: sensor.deskup_pro_flexispot_desk_height
+    entity: sensor.bedroom_1_deskup_pro_flexispot_desk_height
     show_state: false
     show_label: true
     show_icon: true
@@ -34,7 +34,7 @@ cards:
     numeric_precision: 1
     label: |
       [[[
-        var value = states["sensor.deskup_pro_flexispot_desk_height"].state;
+        var value = states["sensor.bedroom_1_deskup_pro_flexispot_desk_height"].state;
         return parseFloat(value).toFixed(1);
       ]]]
     grid_options:
@@ -65,7 +65,7 @@ cards:
         - margin-bottom: 0px
         - padding-top: 2px
   - type: custom:button-card
-    entity: sensor.bedroom_2_deskup_pro_flexispot_idle_time
+    entity: sensor.bedroom_1_deskup_pro_flexispot_idle_time
     show_state: false
     show_label: true
     show_icon: true
@@ -75,7 +75,7 @@ cards:
     numeric_precision: 1
     label: |
       [[[
-        var value = states["sensor.bedroom_2_deskup_pro_flexispot_idle_timestamp"].state;
+        var value = states["sensor.bedroom_1_deskup_pro_flexispot_idle_timestamp"].state;
         return value;
       ]]]
     grid_options:
@@ -94,16 +94,16 @@ cards:
         - padding: 2px
         - background: |
             [[[ 
-              var idletime = states["sensor.bedroom_2_deskup_pro_flexispot_idle_time"].state;
-              var height = states["sensor.deskup_pro_flexispot_desk_height"].state;
+              var idletime = states["sensor.bedroom_1_deskup_pro_flexispot_idle_time"].state;
+              var height = states["sensor.bedroom_1_deskup_pro_flexispot_desk_height"].state;
               if( height < 80 && idletime >= 1800 ) {
                 return "darkred";
               }
             ]]]
         - color: |
             [[[ 
-              var idletime = states["sensor.bedroom_2_deskup_pro_flexispot_idle_time"].state;
-              var height = states["sensor.deskup_pro_flexispot_desk_height"].state;
+              var idletime = states["sensor.bedroom_1_deskup_pro_flexispot_idle_time"].state;
+              var height = states["sensor.bedroom_1_deskup_pro_flexispot_desk_height"].state;
               if( height < 80 && idletime >= 1800 ) {
                 return "white";
               }
@@ -115,8 +115,8 @@ cards:
         - margin-top: 0px
         - color: |
             [[[ 
-              var idletime = states["sensor.bedroom_2_deskup_pro_flexispot_idle_time"].state;
-              var height = states["sensor.deskup_pro_flexispot_desk_height"].state;
+              var idletime = states["sensor.bedroom_1_deskup_pro_flexispot_idle_time"].state;
+              var height = states["sensor.bedroom_1_deskup_pro_flexispot_desk_height"].state;
               if( height < 80 && idletime >= 1800 ) {
                 return "white"
             }
@@ -139,7 +139,7 @@ cards:
       action: call-service
       service: button.press
       target:
-        entity_id: button.button.deskup_pro_flexispot_desk_m1
+        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m1
     grid_options:
       columns: 3
     styles:
@@ -160,7 +160,7 @@ cards:
       action: call-service
       service: button.press
       target:
-        entity_id: button.button.deskup_pro_flexispot_desk_m2
+        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m2
     grid_options:
       columns: 3
     styles:
@@ -181,7 +181,7 @@ cards:
       action: call-service
       service: button.press
       target:
-        entity_id: button.button.deskup_pro_flexispot_desk_m3
+        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m3
     grid_options:
       columns: 3
     styles:
@@ -202,7 +202,7 @@ cards:
       action: call-service
       service: button.press
       target:
-        entity_id: button.button.deskup_pro_flexispot_desk_m4
+        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m4
     grid_options:
       columns: 3
     styles:
@@ -215,7 +215,7 @@ cards:
         - font-size: 12px
         - padding-top: 5px
   - type: custom:mushroom-cover-card
-    entity: cover.deskup_pro_flexispot_height_slider
+    entity: cover.bedroom_1_deskup_pro_flexispot_height_slider
     fill_container: true
     show_position_control: true
     show_tilt_position_control: false
@@ -230,5 +230,4 @@ cards:
       action: none
     tap_action:
       action: more-info
-
 ```
