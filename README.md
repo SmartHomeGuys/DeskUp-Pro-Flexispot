@@ -22,8 +22,8 @@ All the existing functionality of the desk's controller is retained.  Connect th
 - We pulled together what we thought were the best bits from each into this project.
 - We decided to make this a yaml only version of the code to make it easier for non c++ programmers to understand and change.
 - We added a number of our own features to it such as improving the nudge button so it doesn't move its default of around 4cm which isnt really a nudge but one that can be configured by you to be alot less.
-- We reused some features from our popular DeskUp Pro RJ12 product and made the UI very similar including being able to configure everything from the UI instead of config, except for setting the device to cm or inches.
-- Enabled the web server/API so non Home Assistant smarthome users can use it too.
+- We reused some features from our popular DeskUp Pro RJ12 product and made the UI very similar including being able to configure everything from the UI instead of config (except for setting the device to cm or inches).
+- Enabled the web server and documented the API so non Home Assistant smarthome users can use it too.
 
 ## What is shown in Home Assistant
 <p align="center">
@@ -63,9 +63,9 @@ Every function of the DeskUp Pro Flexispot can be controlled using its [Api](doc
 
 
 ## ⚠️ Check Compatibility
-- There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as the desk manufacturer could change their specifications.
+- There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as Flexispot could change their specifications.
 
-- This is a product of reverse engineering, so until you try it on your desk there is no way to be 100% certain that it will or won't work.
+- This is a product of reverse engineering, so until you try it on your desk there is no way to be 100% certain that it will or won't work. However if it's in the lists below the chances are very high.
 
 - Your desk must have a free RJ45 port on the controller (8 pins).
   - Usually the controller will indicate an RJ45 with an 'HS' next to it.
@@ -73,7 +73,7 @@ Every function of the DeskUp Pro Flexispot can be controlled using its [Api](doc
 
 Before you proceed check the compatibility of your desk.  You should understand the risks before purchasing or building the diy option, it's your responsibility to determine if its fit for your purpose. 
 
-### Compatible Desks or Controllers (Confirmed by us and the community)
+### Compatible Desks or Controllers (confirmed by us and the community)
 - E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 - 2026 model
 - E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 - 2026 model
 
@@ -96,25 +96,6 @@ _If your desk is not on the list we cannot advise on its compatibility until som
 - E1 Pro
 - E5 Standard
 
-### Specs
-- The firmware of the DeskUp Pro Flexispot is based on ESPHome
-- The device itself uses an ESP32-C6 chip that is powered by the desk's controller over the RJ45 Cable, so no USB cable is needed to power it.
-- Has a USB-C port for setup.
-- Wi-Fi protocol used is 2.4ghz.
-- Initial setup of the device to connect it to Wi-Fi can be done using a USB-C cable, Bluetooth (if you use Home Assistant and have a Bluetooth proxy).
-
-### More Product Images and Dimensions
-<p align="center">
-
-    Will be added here as they become available 
-
-</p>
-
-### What's in the box if I bought one?
-- DeskUp Pro Flexispot device flashed with the latest firmware
-- Housed in a 3D printed case
-- RJ45 cable (Optional)
-- Getting started guide
 
 ## Prefer to build one yourself 
 DeskUp Pro Flexispot will always remain open source and in this Github repository you can find:
@@ -139,6 +120,12 @@ And would simply like to get the device pre-built, in a box that you can plug in
 
 </p>
 
+### More Product Images and Dimensions
+<p align="center">
+
+    Will be added here as they become available 
+
+</p>
 
 ## Documentation
 [Setup a purchased device](docs/setup/README.md)
