@@ -5,27 +5,26 @@ After the device is added to Home Assistant you will get any updates in Home Ass
 However if you want more control over the device then you can ‘Adopt’ the device into ESPHome Builder. To do this you must plug the device directly into a laptop, you cannot adopt the device over the air (OTA).
 
 Go to ESPHome Builder in Home Assistant where it should be saying a device has been discovered.
-If it’s not, try restarting the ESP Home Device Builder Addon in Home Assistant.
+If it’s not, try restarting the ESP Home Device Builder App in Home Assistant.
 
-TODO ADD IMAGE ![](images/ESPHome-Builder-Device-Discovered.png)
+![](images/ESPHome-Adopting.png)
 
-Click 'Show'.
+Click 'Show' and the following box appears.
 
-TODO ADD IMAGE ![](images/ESPHome-Builder-Take-Control.png)
-
-Click ‘Take Control’ 
-
-TODO ADD IMAGE ![](images/ESPHome-Builder-Take-Control-part2.png)
+![](images/ESPHome-Adopting-take-control.png)
 
 You have the opportunity to rename the device, click 'Take Control' when ready.
 
-TODO ADD IMAGE ![](images/ESPHome-Builder-Take-Control-part3-encrypyion-key.png)
+The device will now be shown on the ESPHome dashboard.
 
-Click 'Install' to compile the code and install the encryption key.
+![](images/ESPHome-Adopting-Device-Added.png)
 
-TODO ADD IMAGE ![](images/ESPHome-Builder-Take-Control-code-compile-and-install.png)
 
-TODO ADD IMAGE ![](images/ESPHome-Builder-Take-Control-uploading.png)
+Click 'Install' and choose "Plug into this computer" to compile the code and flash it to the device.
+![](images/ESPHome-Adopting-Flashing.png)
+
+
+![](images/ESPHome-Adopting-Flashing2.png)
 
 Note: If the upload fails just click 'Retry'.
 

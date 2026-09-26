@@ -3,15 +3,9 @@
 ## Step 1: Connect to Wi-Fi
 To do this choose from one of these options:
 
-TODO [Setup using Bluetooth (for Home Assistant users with a Bluetooth proxy)](setup-using-bluetooth.md)
-
-TODO [Setup using USB](setup-using-usb.md)
-To do this choose from one of these options:
-
 [Setup using Bluetooth (for Home Assistant users with a Bluetooth proxy)](setup-using-bluetooth.md)
 
-TODO [Setup using USB](setup-using-usb.md)
-
+[Setup using USB](setup-using-usb.md)
 
 
 ## Step 2: Add to Home Assistant (optional)
@@ -19,7 +13,7 @@ If you missed it in the previous guides, you can add the device so it appears in
 
 
 ## Step 3: Adopt the device in ESPHome in Home Assistant (Optional)
-TODO [Adopting in ESPHome Builder](adopting-in-home-assistant.md)
+[Adopting in ESPHome Builder](adopting-in-home-assistant.md)
 
 
 ## Step 4: Configure the device
