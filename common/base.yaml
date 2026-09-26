@@ -62,10 +62,6 @@ web_server:
   port: 80
   version: 3
   ota: false
-  # auth:
-  #   type: digest
-  #   username: !secret webserver_deskuppro_username
-  #   password: !secret webserver_deskuppro_password
 
 time:
   - platform: sntp
