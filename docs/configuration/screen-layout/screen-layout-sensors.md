@@ -1,25 +1,22 @@
 # Home Assistant & Homey Pro Screen Layout - What it all does - Sensors
 
 <table border="0">
-  <tr><th>Home Assistant</th><th>Homey Pro</th></tr>
+  <tr><th>Home Assistant</th></tr>
   <tr>
     <td valign="top">
-      <img src="images/DeskUpPro-Sensors-black.jpg" width="500px">
-    </td>
-    <td valign="top">
-      <img src="images/Homey-Sensors.jpg" width="400px">
+      <img src="images/HomeAssistant-Sensors.png" width="500px">
     </td>
   </tr>
 </table>
+
+### Child Lock
+Shows if the child lock is turned On or Off.
 
 ### Desk Height (defaults to cm)
 Shows the height of the desk that is being returned from the desk's controller.
 
 ### Desk Height Percent
 Shows the height of the desk as a percentage value. This is used by the Cover control which can go from 0% to 100%.
-
-### Desk M1, M2, M3, M4 Height (defaults to cm)
-Shows the height of the memory preset button that is being returned from the desk's controller.
 
 ### Desk Status
 Shows if the desk is currently Idle, Raising, or Lowering.
