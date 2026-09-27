@@ -3,7 +3,7 @@
 All these controls can be pressed in automations.
 
 <table border="0">
-  <tr><th>Home Assistant</th><th></th></tr>
+  <tr><th>Home Assistant</th></tr>
   <tr>
     <td valign="top">
       <img src="images/HomeAssistant-controls.png" width="400px">
