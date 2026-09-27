@@ -3,7 +3,7 @@
 Before using your DeskUp Pro you need to configure the min & max height values for your desk:
 
 <table border="0">
-  <tr><th>Home Assistant</th><th></th></tr>
+  <tr><th>Home Assistant</th></tr>
   <tr>
     <td valign="top">
       <img src="images/HomeAssistant-Configuration.png" width="500px">
