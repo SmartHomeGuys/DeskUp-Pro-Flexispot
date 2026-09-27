@@ -173,7 +173,7 @@ cards:
         - font-size: 12px
         - padding-top: 5px
   - type: custom:button-card
-    name: M3
+    name: M3 (Stand)
     show_icon: false
     show_name: true
     show_state: true
@@ -181,7 +181,7 @@ cards:
       action: call-service
       service: button.press
       target:
-        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m3
+        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m3_stand
     grid_options:
       columns: 3
     styles:
@@ -194,7 +194,7 @@ cards:
         - font-size: 12px
         - padding-top: 5px
   - type: custom:button-card
-    name: M4
+    name: M4 (Sit)
     show_icon: false
     show_name: true
     show_state: true
@@ -202,7 +202,7 @@ cards:
       action: call-service
       service: button.press
       target:
-        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m4
+        entity_id: button.bedroom_1_deskup_pro_flexispot_desk_m4_sit
     grid_options:
       columns: 3
     styles:
@@ -229,5 +229,5 @@ cards:
     double_tap_action:
       action: none
     tap_action:
-      action: more-info
+      action: more-info    
 ```
