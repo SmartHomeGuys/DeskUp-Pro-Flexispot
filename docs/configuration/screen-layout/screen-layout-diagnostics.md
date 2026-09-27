@@ -1,7 +1,7 @@
 # Home Assistant Screen Layout - What it all does - Diagnostics
 
 <table border="0">
-  <tr><th>Home Assistant</th><th></th></tr>
+  <tr><th>Home Assistant</th></tr>
   <tr>
     <td valign="top">
       <img src="images/HomeAssistant-Diagnostics.png" width="500px">
