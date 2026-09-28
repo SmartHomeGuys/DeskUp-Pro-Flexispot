@@ -24,7 +24,7 @@ esphome:
   name_add_mac_suffix: true
   project:
     name: SmartHomeGuys.DeskUp Pro Flexispot
-    version: "2026.9.9"
+    version: "2026.9.10"
   
   on_boot:
     - priority: -100
@@ -51,7 +51,7 @@ api:
 ota:
   - platform: esphome
     id: ota_esphome
-    #encryption:
+    encryption:
 
   - platform: http_request
     id: ota_http_request
