@@ -6,11 +6,11 @@ On here we are using the custom button-card to show:
 
 And using the 'Mushroom Cover Card' to render the height cover.
 
-![](images/HomeAssistant-Dashboard.png)
+![](images/HomeAssistant-Dashboard2.png)
 
 After 30 minutes with the desk at sitting height the background changes colour on the 'Desk Idle Time' card to indicate its time to standup.
 
-![](images/HomeAssistant-Dashboard-Warning.png)
+![](images/HomeAssistant-Dashboard-Warning2.png)
 
 This uses these HACS addons:
 - https://github.com/custom-cards/button-card
