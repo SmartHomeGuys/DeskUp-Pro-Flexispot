@@ -36,13 +36,22 @@ logger:
 
 wifi:
 
+# 10 minutes to connect a powered device to wi-fi
+provisioning:
+  timeout: 10min
+  on_timeout:
+    then:
+      - logger.log: "Provisioning window closed. Power-cycle the device to reopen it."
+
+
 # Enable Home Assistant API
 api:
-  #encryption:
+  encryption:
 
 ota:
   - platform: esphome
     id: ota_esphome
+    encryption:
 
   - platform: http_request
     id: ota_http_request
