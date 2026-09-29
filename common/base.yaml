@@ -19,6 +19,7 @@ substitutions:
   desk_max_height: "131"        # Max height
 
 esphome: 
+  min_version: 2026.7.0
   name: ${name}
   friendly_name: ${friendly_name}
   name_add_mac_suffix: true
@@ -41,6 +42,7 @@ api:
   encryption:
     # No key is set here, instead it is set during provisioning (by the provisioning section)
     # If a device is later adopted in ESPHome it will then be given a new key.
+    # This was hardened in ESPHome 2026.7.0 so during initial device provisioning that connection is encrypted.
 
 ota:
   - platform: esphome
