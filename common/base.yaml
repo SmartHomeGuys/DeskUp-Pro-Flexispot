@@ -36,22 +36,16 @@ logger:
 
 wifi:
 
-# 10 minutes to connect a powered device to wi-fi
-provisioning:
-  timeout: 10min
-  on_timeout:
-    then:
-      - logger.log: "Provisioning window closed. Power-cycle the device to reopen it."
-
-
 # Enable Home Assistant API
 api:
   encryption:
+    # No key is set here, instead it is set during provisioning (by the provisioning section)
+    # If a device is later adopted in ESPHome it will then be given a new key.
 
 ota:
   - platform: esphome
     id: ota_esphome
-    #encryption:
+    #encryption:          # Cant add this here yet when creating factory firmware as it errors on compile if the api.encryption.key is not present 
 
   - platform: http_request
     id: ota_http_request
@@ -67,10 +61,11 @@ esp32_improv:
   authorizer: none    # Has to be none since device does not have a physical button
 
 # Use the device ip number to view all the entities in a web page, also provides Rest Api capability.
-web_server:
-  port: 80
-  version: 3
-  ota: false
+# Cant ship devices with web server enabled as it is not secure enough for RED EN 18031-1 compliance
+# web_server:
+#   port: 80
+#   version: 3
+#   ota: false
 
 time:
   - platform: sntp
