@@ -26,6 +26,7 @@ dashboard_import:
   import_full_config: false
 
 # Add OTA Encryption so firmware files are signed by us (RED EN 18031-1 requirement)
+# signed_ota_verification was added in ESPHome 2026.4.0
 esp32:
   framework:                        
     advanced:
@@ -37,6 +38,7 @@ esp32:
 # You then need to power cycle the device to get another 10 minute window
 # This also sets the Api.Encryption.Key when the device first connects to Home Assistant see https://esphome.io/components/provisioning/
 # Added for RED EN 18031-1 compliance
+# The provisioning section was added in ESPHome 2026.7.0
 provisioning:
   timeout: 10min
   on_timeout:
