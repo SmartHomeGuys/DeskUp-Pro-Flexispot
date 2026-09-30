@@ -13,7 +13,7 @@
                                      }
                                  ],
                        "ota":  {
-                                   "md5":  "90cf06c92ae281ca7920daeab38684d0",
+                                   "md5":  "52a264d99b2d5c7336b97ab855b3c0df",
                                    "path":  "firmware-c6/deskup-pro-flexispot.ota.bin",
                                    "release_url":  "https://github.com/SmartHomeGuys/DeskUp-Pro-Flexispot/blob/main/CHANGELOG.md",
                                    "summary":  ""
