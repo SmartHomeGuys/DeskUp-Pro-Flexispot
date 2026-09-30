@@ -3,7 +3,7 @@ substitutions:
   friendly_name: DeskUp Pro Flexispot
 
 packages:
-  #device_base: !include common/c6-chip-config.yaml
+  #device_base: !include C:\GitHub\DeskUp-Pro-Flexispot\common\c6-chip-config.yaml
   device_base:
     url: https://github.com/SmartHomeGuys/DeskUp-Pro-Flexispot
     files: [common/c6-chip-config.yaml]
