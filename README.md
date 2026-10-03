@@ -54,22 +54,21 @@ All the existing functionality of the desk's controller is retained.  Connect th
 
 
 ## ⚠️ Check Compatibility
-- There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as Flexispot could change their specifications.
+There is **no guarantee** that the DeskUp Pro Flexispot will work with your desk as Flexispot could change their specifications (although that's unlikely if its in the lists above).
 
-- This is a product of reverse engineering, so until you try it on your desk there is no way to be 100% certain that it will or won't work. However if it's in the lists below the chances are very high.
+Your desk must have a free RJ45 port on the controller (8 pins).  Usually the controller will indicate an RJ45 with an 'HS' next to it.  This project does not support Flexispot desks with just 1 RJ45 socket (we haven't looked into a passthrough option yet)
 
-- Your desk must have a free RJ45 port on the controller (8 pins).
-  - Usually the controller will indicate an RJ45 with an 'HS' next to it.
-  - This project does not support Flexispot desks with just 1 RJ45 socket (we haven't looked into a passthrough option yet)
+**It's your responsibility** to determine if it's fit for your purpose before purchasing or building.
 
-Before you proceed check the compatibility of your desk.  You should understand the risks before purchasing or building the diy option, it's your responsibility to determine if its fit for your purpose. 
+**Every desk known to us** that works or doesn't is in the lists above.  If your desk is not on the list we cannot advise on its compatibility until someone tries it and tells us. Where controller model numbers are similar there is a high chance of compatibility.
+
 
 ### Compatible Desks or Controllers (confirmed by us and the community)
 - E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 (2026 model)
 - E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 (2026 model)
 
 ### Desks very likely to be compatible with the DeskUp Pro code
-Desks in this section haven't been tested on the code in this repo yet but from what we can tell it should be compatible.
+Desks in this section haven't been tested on the code in this repo yet but we believe they will be compatible.
 
 _If you try the DeskUp Pro Flexispot on any of the desks below or on any not listed please let us know by creating a pull request or open an issue so we can add it here to help others_
 
