@@ -14,7 +14,7 @@ Making FlexiSpot Standing Desks Smart with ESPHome.
 
 If your Flexispot standing desk controller has a spare RJ45 port use DeskUp Pro Flexispot to integrate your desk with your smart home automation system to control your standing desk from your phone, dashboards, automations or voice.
 
-DeskUp Pro Flexispot has full integration with Home Assistant, with a Homey Pro App coming in 2026, but any smart home hub that can send a Rest Api request is also supported using its [Api](docs/configuration/rest-api.md).
+DeskUp Pro Flexispot has full integration with Home Assistant.
 
 All the existing functionality of the desk's controller is retained.  Connect the DeskUp Pro Flexispot to Wi-Fi, plug it into your desk controller and control your desk from your smart home system.
 
@@ -23,29 +23,20 @@ All the existing functionality of the desk's controller is retained.  Connect th
 - We decided to make this a yaml only version of the code to make it easier for non c++ programmers to understand and change.
 - We added a number of our own features to it such as improving the nudge button so it doesn't move its default of around 4cm which isnt really a nudge but one that can be configured by you to be alot less.
 - We reused some features from our popular DeskUp Pro RJ12 product and made the UI very similar including being able to configure everything from the UI instead of config (except for setting the device to cm or inches).
-- Enabled the web server and documented the API so non Home Assistant smarthome users can use it too.
+
+<p align="center">
+  <img src="images/DeskUp-Pro-Flexispot-Comingsoon.png" height="400" />
+</p>
+<p align="center">
+  <a href="https://smarthomeguys.uk/products/deskup-pro-flexispot" target="_blank"><img src="images/SmartHomeGuys-BuyNowButton-Transparent3.png" height="180px" /></a>
+</p>
 
 ## What is shown in Home Assistant
 <p align="center">
-    <img src="images/HomeAssistant-Controls.png" height="450px" />
+    <img src="images/DeskUpProFlexispot-HA.png" height="450px" />
 </p>
 
 29 entities are exposed in Home Assistant that let you control every function of the DeskUp Pro Flexispot.
-
-## Homey Pro App (estimated to be in the app store December 2026)
-<p align="center">
-
-    Images will be added here as we build each screen
-
-</p>
-
-## Other smart home systems can use the built in Web Interface and its Rest API
-<p align="center">
-    <img src="images/WebUI-AllControls.png" />
-</p>
-
-Every function of the DeskUp Pro Flexispot can be controlled using its [Api](docs/configuration/rest-api.md).
-
 
 ## Automations you could create for your desk
 - If you're sitting down for too long, then automatically raise the desk to standing height.
@@ -74,8 +65,8 @@ Every function of the DeskUp Pro Flexispot can be controlled using its [Api](doc
 Before you proceed check the compatibility of your desk.  You should understand the risks before purchasing or building the diy option, it's your responsibility to determine if its fit for your purpose. 
 
 ### Compatible Desks or Controllers (confirmed by us and the community)
-- E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 - 2026 model
-- E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 - 2026 model
+- E7 Mini - controller CB38M2M(IB)-1 and keypad HS13G-1 (2026 model)
+- E7 Pro - controller CB38M2M(IB)-4 and keypad HS13G-1 (2026 model)
 
 ### Desks very likely to be compatible with the DeskUp Pro code
 Desks in this section haven't been tested on the code in this repo yet but from what we can tell it should be compatible.
@@ -95,6 +86,7 @@ _If your desk is not on the list we cannot advise on its compatibility until som
 - EK5 - Controller CB38M2B(IB)-1 and keypad HS13A-1 (has different wiring was mentioned on the iMicknl repo).
 - E1 Pro
 - E5 Standard
+- Any desk without 1 spare RJ45 socket
 
 
 ## Prefer to build one yourself 
@@ -115,16 +107,7 @@ However if you would prefer to avoid:
 And would simply like to get the device pre-built, in a box that you can plug in to your desk and be automating it in 5 minutes then you can purchase one from our store.
 
 <p align="center">
-
-    Estimated to be available in the store by end of November 2026
-
-</p>
-
-### More Product Images and Dimensions
-<p align="center">
-
-    Will be added here as they become available 
-
+  <a href="https://smarthomeguys.uk/products/deskup-pro-flexispot" target="_blank"><img src="images/SmartHomeGuys-BuyNowButton-Transparent3.png" height="180px" /></a>
 </p>
 
 ## Documentation
