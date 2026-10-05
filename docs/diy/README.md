@@ -27,8 +27,8 @@ To automate your desk, what we are going to make is the cable below with an RJ45
 | PIN 2 | Orange | Unused | Unused |
 | PIN 3 | Green/White | Unused | Unused |
 | PIN 4 | Blue | Blue | Virtual Screen - GPIO19 |
-| PIN 5 | Blue/White | Green | TX - GPIO18 |
-| PIN 6 | Green | Purple | RX - GPIO20 |
+| PIN 5 | Blue/White | Purple | RX - GPIO20 |
+| PIN 6 | Green | Green | TX - GPIO18 |
 | PIN 7 | Brown/White | White | GND |
 | PIN 8 | Brown | Brown | 5V |
 
