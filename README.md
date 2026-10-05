@@ -78,7 +78,7 @@ Desks in this section haven't been tested on the code in this repo yet but we be
 
 _If you try the DeskUp Pro Flexispot on any of the desks below or on any not listed please let us know by creating a pull request or open an issue so we can add it here to help others_
 
-- Any other E7 2026 model with a spare RJ45 port e.g Standard, Flow
+- Any other E7 2026 model with a spare RJ45 port e.g Standard/Series, Plus, Flow
 
 - E7 - controller CB38M2J(IB)-1 and keypad HS13B-1
 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs13b-1">Confirmed this uses the same controller pins as us and was listed in the iMicknl repo</a>
