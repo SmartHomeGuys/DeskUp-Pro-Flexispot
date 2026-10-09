@@ -85,6 +85,10 @@ _If you try the DeskUp Pro Flexispot on any of the desks below or on any not lis
 
 - E5B - Controller CB38M2A-1 and keypad HS01B-1 <a href="https://github.com/iMicknl/LoctekMotion_IoT?tab=readme-ov-file#hs01b-1">Confirmed this uses the same controller pins as us and was listed in the iMicknl repo</a>
 
+- E2Q & E5Q with the CB38M2L(IB)-1 controller and keypad HS36B-1 <a href="https://github.com/iMicknl/LoctekMotion_IoT/issues/102#issuecomment-2558036464">listed on the iMicknl repo</a>
+
+- E7 Pro Plus with CB38M2L controller and keypad HS13M-1C0 <a href="https://github.com/iMicknl/LoctekMotion_IoT/issues/66#issuecomment-4605684101">listed on the iMicknl repo</a>
+
 _If your desk is not on the list we cannot advise on its compatibility until someone tries it and tells us to update these lists._
 
 ### Incompatible Desks or Controllers 
