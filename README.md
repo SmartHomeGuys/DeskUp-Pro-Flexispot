@@ -76,8 +76,6 @@ Your desk must have a free RJ45 port on the controller (8 pins).  Usually the co
 ### Desks very likely to be compatible with the DeskUp Pro code
 Desks in this section haven't been tested on the code in this repo yet but we believe they will be compatible.
 
-_If you try the DeskUp Pro Flexispot on any of the desks below or on any not listed please let us know by creating a pull request or open an issue so we can add it here to help others_
-
 - Any other E7 2026 model with a spare RJ45 port e.g Standard/Series, Plus, Flow
 
 - E7 - controller CB38M2J(IB)-1 and keypad HS13B-1
@@ -90,6 +88,8 @@ _If you try the DeskUp Pro Flexispot on any of the desks below or on any not lis
 - E7 Pro Plus with CB38M2L controller and keypad HS13M-1C0 <a href="https://github.com/iMicknl/LoctekMotion_IoT/issues/66#issuecomment-4605684101">listed on the iMicknl repo</a>
 
 _If your desk is not on the list we cannot advise on its compatibility until someone tries it and tells us to update these lists._
+
+_If you try the DeskUp Pro Flexispot on a desk not listed in the compatible section please let us know by creating a pull request or open an issue so we can add it here to help others_
 
 ### Incompatible Desks or Controllers 
 - EK5 - Controller CB38M2B(IB)-1 and keypad HS13A-1 (has different wiring was mentioned on the iMicknl repo).
